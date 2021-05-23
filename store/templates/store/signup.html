@@ -1,0 +1,42 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
+
+
+
+<div class="row justify-content-center">
+	<div class="col-8">
+		<div class="card">
+			<div class="card-body">
+				<h2>Sign Up</h2>
+				<br>
+
+					<form action="{% url 'signup' %}" method="post">
+						{% csrf_token %}
+						{{ user_form|crispy }}
+						{{ customer_form|crispy }}
+						<button id="form-button" class="btn btn-success btn-block">Sign up</button>
+					</form>
+					<br>
+					<span class="link">Already registered? <a href="{% url 'login' %}">Login now!</a></span>
+
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	{% endblock %}

@@ -1,0 +1,59 @@
+.text-component text-center{
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 30px 10px;
+  width: 100%;
+
+}
+
+.text1 {
+	color: #4f868c;
+	padding: 30px 10px;
+
+}
+
+.topnav {
+  background-color: #4f868c;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+}
+
+.topnav a {
+  float: none;
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+.cd-faq__title{
+	list-style-type: none;
+	position:relative; left:-30px;
+}
+
+.cd-faq__trigger{
+  line-height: 4;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.text-component{
+  text-align: justify;
+  text-justify: inter-word;
+}

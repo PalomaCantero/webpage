@@ -1,0 +1,74 @@
+{% extends 'store/main.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
+
+
+
+<header class="cd-header flex flex-column flex-center">
+  <div class="text-component text-center">
+    <h1 class="text1">Contact</h1>
+  </div>
+</header>
+
+
+<div>
+  <h2>Contact us directly if you have any questions</h2>
+  <br>
+  <p>
+   Please write your name, email address and a message below if you have any questions.
+   One of our staff members will be happy to contact you directly and answer your questions as soon as possible. 
+ </p>
+ <form method="post">
+  {% csrf_token %}
+  {% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+  <div class="form-group">
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+    {% if field.errors %}
+    {% render_field field class="form-control is-invalid" %}
+    {% for error in field.errors %}
+    <div class="invalid-feedback">
+      {{ error }}
+    </div>
+    {% endfor %}
+    {% else %}
+    {% render_field field class="form-control is-valid" %}
+    {% endif %}
+    {% else %}
+    {% render_field field class="form-control" %}
+    {% endif %}
+
+    {% if field.help_text %}
+    <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  <button id="form-button" class="btn btn-success btn-block" type="submit">Submit</button>
+</form>
+</div>
+
+{% endblock content %}
