@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
+from django.db.models import Q
 import json
 import datetime
 from .models import *
@@ -163,3 +164,65 @@ def productDetail(request, slug, id):
 
     product = Product.objects.get(id=id)
     return render(request, 'store/productdetail.html', {'product':product, 'cartItems':cartItems})
+
+'''
+def search(request):
+    q = request.GET['q']
+    data = Product.objects.filter(name__icontains=q).order_by('-id')
+    dataCart = cartData(request)
+
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+
+    products = Product.objects.all()
+    context = {'products':products, 'cartItems':cartItems, 'data':data}
+    return render (request, 'store/search.html', context)
+'''
+
+def productList(request):
+    products = Product.objects.all().order_by('-id')
+    dataCart = cartData(request)
+
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+
+    context = {'products':products, 'cartItems':cartItems}
+    return render (request, 'store/product_list.html', context)
+
+def productCategory(request, brandCat):
+    brandCategory = Brand.objects.filter(name=brandCat)
+    products = Product.objects.filter(brand=brandCategory.first())
+    dataCart = cartData(request)
+
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+
+    context = {'products':products, 'cartItems':cartItems, 'brand': brandCat}
+    return render (request, 'store/product_category.html', context)
+
+def deepSearch(request):
+    dataCart = cartData(request)
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+
+    query = request.GET.get('query')
+    price_from = request.GET.get('price_from', 0)
+    price_to = request.GET.get('price_to', 100000)
+    sorting = request.GET.get('sorting', 'price')
+        
+    products = Product.objects.filter(Q(name__icontains=query) | Q(detail__icontains=query)).filter(price__gte=price_from).filter(price__lte=price_to)
+
+    context = {
+        'products':products, 'cartItems':cartItems,
+        'query': query,
+        'products': products.order_by(sorting),
+        'price_from': price_from,
+        'price_to': price_to,
+        'sorting': sorting
+    }
+
+    return render(request, 'store/product_list.html', context)

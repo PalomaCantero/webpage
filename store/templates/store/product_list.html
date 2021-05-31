@@ -1,0 +1,104 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<script>
+  function search() {
+    var x = document.getElementById("toggle");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+</script>
+
+<h2 class="text1">Products</h2>
+
+<button class="btn btn-outline-success" onclick="search()">Advanced Search</button>
+<div id="toggle" style="display:none;">
+  <hr>
+  <h2 class="subtitle">Search term: "{{ query }}"</h2>
+
+  <form method="get" action="{% url 'deepSearch' %}"> 
+    <div class="row flex" style="margin-bottom: 100px;">
+      <div class="col-md-2" style="display: inline-block">
+        <div class="field">
+          <label>Search term</label>
+
+          <div class="control" style="margin-top: 24px;">
+            <input type="text" name="query" class="input" value="{{ query }}">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Price range</label>
+
+        <div class="field">
+          <label>From</label>
+          <div class="control">
+            <input type="number" name="price_from" class="input" value="{{ price_from }}" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>To</label>
+          <div class="control" >
+            <input type="number" name="price_to" class="input" value="{{ price_to }}" required>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="field">
+          <label>Select sorting criteria</label>
+
+          <div class="control" style="margin-top: 24px;">
+            <div class="select">
+              <select name="sorting">
+                <option value="price"{% if sorting == 'price' %} selected{% endif %}>Price low-high</option>
+                <option value="-price"{% if sorting == '-price' %} selected{% endif %}>Price high-low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="field">
+          <div class="control" style="margin-top: 44px;">
+            <button class="btn btn-outline-success">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+
+
+
+    <div class="row" style="margin: 2% 5% 2%">
+      {% for product in products %}
+      <div class="col-lg-4">
+        <img class="thumbnail" src="{{product.imageURL}}">
+        <div class="box-element product">
+          <h6><strong>{{product.name}}</strong></h6>
+          <hr>
+          <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+          <a class="btn btn-outline-success" href="/product/{{product.slug}}/{{product.id}}">View</a>
+          <h4 style="display: inline-block; float: right">{{product.price|floatformat:2}}€</h4>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+  <a class="btn btn-outline-success" style="margin-top: 35px;" href="{% url 'product_list' %}">&#x2190; All Products</a>
+
+
+</div>
+
+{% endblock content %}
