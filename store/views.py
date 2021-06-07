@@ -4,7 +4,7 @@ from django.db.models import Q
 import json
 import datetime
 from .models import *
-from .utils import cookieCart, cartData, guestOrder
+from .utils import cookieCart, cartData, guestOrder, getUserData
 from .forms import *
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.forms import UserCreationForm
@@ -165,21 +165,6 @@ def productDetail(request, slug, id):
     product = Product.objects.get(id=id)
     return render(request, 'store/productdetail.html', {'product':product, 'cartItems':cartItems})
 
-'''
-def search(request):
-    q = request.GET['q']
-    data = Product.objects.filter(name__icontains=q).order_by('-id')
-    dataCart = cartData(request)
-
-    cartItems = dataCart["cartItems"]
-    order = dataCart["order"]
-    items = dataCart["items"]
-
-    products = Product.objects.all()
-    context = {'products':products, 'cartItems':cartItems, 'data':data}
-    return render (request, 'store/search.html', context)
-'''
-
 def productList(request):
     products = Product.objects.all().order_by('-id')
     dataCart = cartData(request)
@@ -226,3 +211,17 @@ def deepSearch(request):
     }
 
     return render(request, 'store/product_list.html', context)
+
+def myOrders(request):
+    dataCart = cartData(request)
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+    userData = getUserData(request)
+    customer = userData['customer']
+    orders = userData['orders']
+    orderItems = userData['orderItems']
+    #orderPrice = userData['orderPrice']
+
+    context = {'items':items, 'order':order, 'cartItems':cartItems, 'customer':customer, 'orders':orders, 'orderItems': orderItems}
+    return render(request, 'store/order.html', context)

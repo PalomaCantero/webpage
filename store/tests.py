@@ -45,6 +45,10 @@ class TestUrls (SimpleTestCase):
         url = reverse('signup')
         self.assertEquals(resolve(url).func, signUp)
 
+    def test_myOrders_url_resolves(self):
+        url = reverse('myOrders')
+        self.assertEquals(resolve(url).func, myOrders)
+
 
 class TestViews(TestCase):
 
@@ -91,6 +95,7 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'store/signup.html')
+
 
 # TEST MODELS
 class TestModels(TestCase):
@@ -245,22 +250,3 @@ class TestModels(TestCase):
         self.assertEquals(OrderItem.objects.count(), 1)
         self.assertEquals(order1.get_cart_total, 360)
         self.assertEquals(order1.get_cart_items, 4)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

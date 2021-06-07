@@ -1,5 +1,6 @@
 import json
 from .models import *
+from django.core.exceptions import MultipleObjectsReturned
 
 def cookieCart(request):
     try:
@@ -30,7 +31,6 @@ def cookieCart(request):
                     'detail':product.detail,
                     'imageURL':product.imageURL,
                 },
-                #ELEMENTO AQUI DEL FALLO SI QUITO ELEMENT NO VA TRANS, PERO SE VEN PRODUCTS
                 'quantity':cart[i]["quantity"],
                 'get_total':total,
             }
@@ -83,3 +83,23 @@ def guestOrder(request, data):
             quantity=(item['quantity'] if item['quantity']>0 else -1*item['quantity']), # negative quantity = freebies
         )
     return customer, order
+
+
+def getUserData(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        orders = Order.objects.filter(customer=customer, complete=True)
+        print(orders)
+        print(len(orders))
+        try:
+            orderItems = []
+            for i in range(len(orders)):
+                items = OrderItem.objects.filter(order=orders[i])
+                for j in range(len(items)):
+                    orderItems.append(items[j])
+                    print(items[j])
+
+        except (MultipleObjectsReturned):
+            pass
+
+    return {'customer':customer, 'orders':orders, 'orderItems': orderItems}
