@@ -18,5 +18,6 @@ urlpatterns = [
     path('product-list/', views.productList, name="product_list"),
     path('product-list/<str:brandCat>/', views.productCategory, name="product_category"),
     path('deepSearch/', views.deepSearch, name="deepSearch"),
-    
+    path('adminOrder/', views.adminOrder, name="adminOrder"),
+
 ]

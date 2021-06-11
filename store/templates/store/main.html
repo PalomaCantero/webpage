@@ -188,13 +188,17 @@
        <li>
          <a>Your Privacy Rights</a>
        </li>
-       <li>
-        <a>Terms & Conditions</a>
-      </li>
+       <li>           
+         {% if user.is_authenticated and request.user.is_superuser %}
+         <a class="link" aria-current="page" href="{% url 'adminOrder' %}">Admin Orders</a>
+         {% else %}
+         <a>Terms & Conditions</a>
+         {% endif %}
+       </li>
 
-    </ul>
-  </div>
-</div>
+     </ul>
+   </div>
+ </div>
 </div>
 
 <hr class="my-4">

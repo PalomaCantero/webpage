@@ -57,15 +57,15 @@
                 <tr>
                   <th><div style="flex:2"><img class="row-image" src="{{prod.product.imageURL}}"></div></th>
                   <th><h6><strong>Product:  </strong><a class="link" href="/product/{{prod.product.slug}}/{{prod.product.id}}">{{prod.product.name}}</a></h6></th>
+                  </tr>
                   <tr>
                   <th><h6><strong>Quantity:</strong>  {{prod.quantity}}</h6></th>
                   <th><h6><strong>Unit Price:</strong>  {{prod.product.price}}€</h6></th>
                   <th><h6><strong>Total Price:</strong>  {% widthratio prod.product.price 1 prod.quantity %}€</h6></th>
-                  <tr>
+                  </tr>
                 </tr>
               {% endif %}
             {% endfor %}
-        </tr>
         {% endfor %}
       </table>
 

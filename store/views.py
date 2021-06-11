@@ -4,7 +4,7 @@ from django.db.models import Q
 import json
 import datetime
 from .models import *
-from .utils import cookieCart, cartData, guestOrder, getUserData
+from .utils import cookieCart, cartData, guestOrder, getUserData, getAllOrders
 from .forms import *
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.forms import UserCreationForm
@@ -221,7 +221,20 @@ def myOrders(request):
     customer = userData['customer']
     orders = userData['orders']
     orderItems = userData['orderItems']
-    #orderPrice = userData['orderPrice']
 
     context = {'items':items, 'order':order, 'cartItems':cartItems, 'customer':customer, 'orders':orders, 'orderItems': orderItems}
     return render(request, 'store/order.html', context)
+
+def adminOrder(request):
+    dataCart = cartData(request)
+    cartItems = dataCart["cartItems"]
+    order = dataCart["order"]
+    items = dataCart["items"]
+    orderData = getAllOrders(request)
+    orders = orderData['orders']
+    orderItems = orderData['orderItems']
+    customers = orderData['customers']
+    shipping = orderData['shipping']
+
+    context = {'items':items, 'order':order, 'cartItems':cartItems, 'orders':orders, 'orderItems': orderItems, 'customers':customers, 'shipping':shipping}
+    return render(request, 'store/adminOrder.html', context)

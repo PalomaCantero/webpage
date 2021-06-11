@@ -89,17 +89,32 @@ def getUserData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         orders = Order.objects.filter(customer=customer, complete=True)
-        print(orders)
-        print(len(orders))
         try:
             orderItems = []
             for i in range(len(orders)):
                 items = OrderItem.objects.filter(order=orders[i])
                 for j in range(len(items)):
                     orderItems.append(items[j])
-                    print(items[j])
 
         except (MultipleObjectsReturned):
             pass
 
     return {'customer':customer, 'orders':orders, 'orderItems': orderItems}
+
+
+def getAllOrders(request):
+    orders = Order.objects.filter(complete=True)
+    customers = Customer.objects.all()
+    shipping = ShippingAddress.objects.all()
+    try:
+        orderItems = []
+        for i in range(len(orders)):
+            items = OrderItem.objects.filter(order=orders[i])
+            for j in range(len(items)):
+                orderItems.append(items[j])
+                print(items[j])
+
+    except (MultipleObjectsReturned):
+        pass
+
+    return {'orders':orders, 'orderItems': orderItems, 'customers':customers, 'shipping':shipping}
